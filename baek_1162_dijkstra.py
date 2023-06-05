@@ -4,52 +4,52 @@ import heapq
 sys.stdin = open('input_1162.txt', 'r')
 
 N, M, K = map(int, input().split())
-roads = []
+
+graph = collections.defaultdict(list)
 for _ in range(M):
     a, b, c = map(int, input().split())
-    roads.append([c, a,b])
+    graph[a].append((c, b))
+    graph[b].append((c, a))
 
-# 큰 순으로 정렬
-roads.sort(reverse=True)
-# print(roads)
-
-# for i in range(K):
-#     roads[i][0] =0
-# print(roads)
-# graph 만들기
-graph = collections.defaultdict(list)
-for cost, a, b in roads:
-    graph[a].append((cost, b))
-    graph[b].append((cost, a))
 
 def dijkstra(start):
     # 거리 테이블, 우선순위 큐 생성
-    distance = [10**6]*(N+1)
+    distance = [[float('inf')]*(N+1) for _ in range(K+1)]
+    # /print(distance)
+    ## distance[i][k] 도로포장을 k개했을때 i번째로 가는 최소비용 
     q = []
     # 거리 테이블, 우선순위 큐 초기화
-    distance[start] =0
-    heapq.heappush(q, (0, start))
+    distance[0][start] = 0
     cnt = 0
+    heapq.heappush(q, (0, start, cnt))
     while q:
-
-        dist, now = heapq.heappop(q)
-        
-        
-        if distance[now] < dist: #이미 처리되었으면
+        dist, now, cnt = heapq.heappop(q)
+        if distance[cnt][now] < dist: #이미 처리되었으면
             continue
        
         for cost, node in graph[now]: # 인접한 그래프연산
             
             new_cost = dist + cost
-            if new_cost < distance[node]:
-                distance[node] = new_cost
-                heapq.heappush(q, (new_cost, node))
+            # 같은cnt 내에서 처리 (즉, 도로포장 안했을 때)
+            if new_cost < distance[cnt][node]: 
+                distance[cnt][node] = new_cost
+                heapq.heappush(q, (new_cost, node, cnt))
+
+            # 도로 포장 했을때
+            if cnt < K and dist < distance[cnt+1][node]: # 지금 연결된 노드를 도로포장 했을때
+                distance[cnt+1][node] = dist
+                heapq.heappush(q, (dist, node, cnt+1))
+        
     return distance
 
 result = dijkstra(1)
-answer = result[N]
+answer = float('inf')
+for i in range(K+1):
+    if result[i][N] < answer:
+        answer = result[i][N]
 
-print(result)
+
+# print(result)
 print(answer)
 
 
