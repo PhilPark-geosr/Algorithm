@@ -28,22 +28,22 @@ def dfs(x, y):
     return dp[x][y]
 
 
-# import sys
-# sys.stdin = open('input_1520.txt', 'r')
+import sys
+sys.stdin = open('input_1520.txt', 'r')
 
-# m, n = map(int, input().split())
-# graph = []
-# for _ in range(m):
-#     line = list(map(int, input().split()))
-#     graph.append(line)
-m, n = 4,5
-graph = [
-    [50, 45, 37, 32, 30],
-    [35, 50, 40, 20, 25],
-    [30, 30, 25, 17, 28],
-    [27, 24, 22, 15, 10],
+m, n = map(int, input().split())
+graph = []
+for _ in range(m):
+    line = list(map(int, input().split()))
+    graph.append(line)
+# m, n = 4,5
+# graph = [
+#     [50, 45, 37, 32, 30],
+#     [35, 50, 40, 20, 25],
+#     [30, 30, 25, 17, 28],
+#     [27, 24, 22, 15, 10],
 
-]
+# ]
 dp = [[-1 for _ in range(n)] for _ in range(m)]
 dx = [1, -1, 0, 0]
 dy = [0, 0, 1, -1]
