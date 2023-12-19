@@ -18,7 +18,7 @@ def dfs(v):
     dp[v] =0 # 방문체크
     for k in range(2, v+1, 2):
 
-        dp[v] +=dfs(k)*dfs(v-k) 
+        dp[v] +=dfs(k-2)*dfs(v-k)
         dp[v]%=1000000007
     return dp[v]
 
