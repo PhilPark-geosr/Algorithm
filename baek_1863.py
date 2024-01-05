@@ -5,26 +5,37 @@ N = int(input())
 prev = 0
 cur = 0
 
-cnt = 0
+skylines = []
 for _ in range(N):
+    _, h = map(int, input().split())
+    skylines.append(h)
 
-    _, new = map(int, input().split())
-    print(f"prev, cur, new, cnt {prev, cur, new, cnt}")
-    if new == 0:
-        prev = 0
-        cur = 0
+answer = 0
+stack = []  # 아직 건물 유지중인 애들
+for h in skylines:
+    # print(stack)
+    if len(stack) == 0:
+        stack.append(h)
         continue
-    if cur != new:
-        # prev, cur 0일때 처리
-        if prev == 0:
-            cnt += 1
-            cur = new
-            prev = new
-            continue
-        if new!= prev:
-            cnt +=1
-            cur = new
-        else: # new == prev
-            cur = new
+    # 높이가 떨어졌을경우
+    if stack[-1] > h:
+        while stack:
+            if stack[-1] < h:
+                break
+            if stack[-1] == h:
+                stack.pop()
+            else:
+                stack.pop()
+                answer += 1
+    # 높이가 우상향인 경우
+    stack.append(h)
 
-print(cnt)
+# print(stack)
+if stack:
+    cnt = 0
+    for elem in stack:
+        if elem != 0:
+            cnt += 1
+    print(answer + cnt)
+else:
+    print(answer)
