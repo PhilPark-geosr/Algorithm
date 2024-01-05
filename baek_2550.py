@@ -11,6 +11,27 @@ for _ in range(N):
     tree[a].append((l,r))
 # print(tree)
 
+
+# 루트노드 찾기
+child_dic = collections.defaultdict(int) #자식 보관하는 딕셔너리
+for v in tree:
+    left = tree[v][0][0]
+    if left !=-1:
+        child_dic[left] = 1
+    right = tree[v][0][1]
+    if right != 1:
+        child_dic[right] = 1
+
+root_v = -1
+for v in tree:
+    if child_dic[v] == 0:
+        root_v = v
+        break
+
+# print(root_v)
+
+
+
 pos = collections.defaultdict(dict)
 depth_dic = collections.defaultdict(list)
 def dfs(v):
@@ -38,7 +59,7 @@ def dfs(v):
         pos[v]['right'] = right
         return left + right
 # 각자 트리 생성
-dfs(1)
+dfs(root_v)
 
 # print(pos)
 def dfs2(v, l,r, depth):
@@ -58,7 +79,7 @@ def dfs2(v, l,r, depth):
         dfs2(r_v, my_pos+1, r, depth+1)
 
 
-dfs2(1, 1, N, 0)
+dfs2(root_v, 1, N, 0)
 # print(depth_dic)
 
 depth_list = sorted(list(depth_dic.keys()))
